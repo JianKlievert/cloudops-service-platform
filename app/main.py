@@ -1,6 +1,6 @@
 from sqlalchemy import select
 from datetime import datetime, timezone
-from fastapi import Depends, FastAPI
+from fastapi import Body, Depends, FastAPI
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models import Job
@@ -27,11 +27,17 @@ def get_jobs(db: Session = Depends(get_db)):
 
 
 @app.post("/jobs")
-def create_job(job: JobCreate, db: Session = Depends(get_db)):
+def create_job(
+    job: JobCreate = Body(
+        ...,
+        examples=[{"type": "example-job", "input": "example input"}],
+    ),
+    db: Session = Depends(get_db),
+):
     db_job = Job(
         type=job.type,
         input=job.input,
-        status="pending",
+        status="PENDING",
         created_at=datetime.now(timezone.utc),
     )
     db.add(db_job)

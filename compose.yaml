@@ -1,0 +1,19 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://cloudops_user:password@db:5432/cloudops
+
+  db:
+    image: postgres:18
+    environment:
+      - POSTGRES_USER=cloudops_user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=cloudops
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  volumes:
+    db_data:
