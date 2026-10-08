@@ -4,16 +4,16 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql://cloudops_user:password@db:5432/cloudops
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
 
   db:
     image: postgres:18
     environment:
-      - POSTGRES_USER=cloudops_user
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=cloudops
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql
 
-  volumes:
-    db_data:
+volumes:
+  db_data:
